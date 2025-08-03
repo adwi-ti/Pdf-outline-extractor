@@ -119,6 +119,9 @@ def main():
         )
         
         if uploaded_file is not None:
+            # Store file name in session state
+            st.session_state.uploaded_file_name = uploaded_file.name
+            
             # Display file info
             file_details = {
                 "Filename": uploaded_file.name,
@@ -201,10 +204,14 @@ def main():
             
             # Download JSON button
             json_str = json.dumps(result, indent=2, ensure_ascii=False)
+            file_name = "document_outline.json"
+            if 'uploaded_file_name' in st.session_state:
+                file_name = f"{st.session_state.uploaded_file_name.replace('.pdf', '')}_outline.json"
+            
             st.download_button(
                 label="📥 Download JSON",
                 data=json_str,
-                file_name=f"{uploaded_file.name.replace('.pdf', '')}_outline.json",
+                file_name=file_name,
                 mime="application/json"
             )
             
